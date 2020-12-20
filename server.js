@@ -4,6 +4,8 @@ const http = require("http");
 
 const fs = require("fs");
 
+const enviar = require("./mailer");
+
 const { usuariosPush } = require("./pushUser");
 
 const { usuarios } = JSON.parse(fs.readFileSync("usuarios.json", "utf8"));
@@ -48,7 +50,7 @@ http
       const ganador = Math.floor(Math.random() * usuarios.length);
       const posicionGanador = usuarios[ganador];
       const texto = `El ganador del concurso fue ${posicionGanador.name}, gracias por participar`;
-      // await enviar("nodemaileradl@gmail.com", "nodemaileradl@gmail.com", texto);
+      await enviar("nodemaileradl@gmail.com", "nodemaileradl@gmail.com", texto);
       res.end(JSON.stringify(posicionGanador));
     }
   })
