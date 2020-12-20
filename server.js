@@ -25,7 +25,7 @@ http
 
     if (req.url.startsWith("/usuarios") && req.method == "GET") {
       const { usuarios } = JSON.parse(fs.readFileSync("usuarios.json", "utf8"));
-      console.log(usuarios);
+
       res.end(JSON.stringify({ usuarios }));
     }
 
@@ -49,8 +49,13 @@ http
     if (req.url == "/ganador" && req.method == "GET") {
       const ganador = Math.floor(Math.random() * usuarios.length);
       const posicionGanador = usuarios[ganador];
-      const texto = `El ganador del concurso fue ${posicionGanador.name}, gracias por participar`;
-      await enviar("nodemaileradl@gmail.com", "nodemaileradl@gmail.com", texto);
+      let email = usuarios.map((correo) => {
+        return correo.correo;
+      });
+      console.log(email);
+
+      const mensaje = `El ganador del concurso fue ${posicionGanador.nombre}, gracias por participar`;
+      await enviar(`${email}`, "nodemaileradl@gmail.com", mensaje);
       res.end(JSON.stringify(posicionGanador));
     }
   })
