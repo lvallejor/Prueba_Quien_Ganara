@@ -6,6 +6,8 @@ const fs = require("fs");
 
 const { usuariosPush } = require("./pushUser");
 
+const { usuarios } = JSON.parse(fs.readFileSync("usuarios.json", "utf8"));
+
 http
   .createServer(async (req, res) => {
     if (req.url === "/" && req.method == "GET") {
@@ -40,6 +42,14 @@ http
         fs.writeFileSync("premio.json", JSON.stringify(premio));
         res.end("Premio");
       });
+    }
+
+    if (req.url == "/ganador" && req.method == "GET") {
+      const ganador = Math.floor(Math.random() * usuarios.length);
+      const posicionGanador = usuarios[ganador];
+      const texto = `El ganador del concurso fue ${posicionGanador.name}, gracias por participar`;
+      // await enviar("nodemaileradl@gmail.com", "nodemaileradl@gmail.com", texto);
+      res.end(JSON.stringify(posicionGanador));
     }
   })
   .listen(3000, () => console.log("servidor en puerto 3000"));
